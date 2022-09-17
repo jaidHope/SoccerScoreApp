@@ -1,0 +1,24 @@
+Lions 3, Snakes 3
+Tarantulas 1, FC Awesome 0
+Lions 1, FC Awesome 1
+Tarantulas 3, Snakes 1
+Lions 4, Grouches 0
+
+Lions 3
+Snakes 3
+use regex to obtain the word and number (method parseTeam(String s) parseScore(String s))
+Score: [^a-zA-Z\s]
+Name: [^\d] - trim trailing space
+
+
+[Lions, 3, Snakes, 3]
+   0    1    2     3
+ix 0, 2 = name
+Add 0,2 to hashtable if not already exist {name, 0}
+ix 1, 3 = score
+case 
+	ix 1>3: get index 0's value in HT and append 3 to value
+	ix 1=3: get index 0's value in HT and append 1 to value.
+			get index 2's value in HT and append 1 to value  
+				goalScorers.put(name, goalScorers.get(name) + goals);  
+	ix 1<3:get index 2's value in HT and append 3 to value
