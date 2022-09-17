@@ -26,8 +26,9 @@ public class ScoreProcessor
 				scanner.close();
 				HashMap results = parser.calculateTableScores();
 
-				Map sortedResults = sortResults(results);
+				HashMap<String, Integer> sortedResults = sortResults(results);
 
+				printRankings(sortedResults);
 			}
 
 			catch (FileNotFoundException e)
@@ -36,7 +37,55 @@ public class ScoreProcessor
 			}
 	}
 
-	private static Map<String, Integer> sortResults(HashMap results)
+	private static void printRankings(HashMap sortedResults)
+	{
+		Set results = sortedResults.entrySet();
+
+		int i = 1;
+		Iterator iterator = results.iterator();
+		while (iterator.hasNext())
+		{
+			Map.Entry team = (Map.Entry) iterator.next();
+
+			//check if there are consecutive identical scores
+			if (team.getValue() == ((Map.Entry<?, ?>) iterator.next()).getValue())
+			{
+				// if the team only has one point, then a slightly different string needs to be output.
+				if (checkOnePoint((int)team.getValue()))
+				{
+					System.out.println(i + ". " + team.getKey() + ", " + team.getValue() + " pt");
+				}
+				else
+				{
+					System.out.println(i + ". " + team.getKey() + ", " + team.getValue() + " pts");
+				}
+			}
+			else
+			{
+				if (checkOnePoint((int) team.getValue()))
+				{
+					System.out.println(i + ". " + team.getKey() + ", " + team.getValue() + " pt");
+				} else
+				{
+					System.out.println(i + ". " + team.getKey() + ", " + team.getValue() + " pts");
+				}
+				i++;
+			}
+
+
+		}
+	}
+
+	private static boolean checkOnePoint(int goals)
+	{
+		if(goals == 1)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	private static HashMap<String, Integer> sortResults(HashMap results)
 	{
 		Set set = results.entrySet();
 
@@ -46,8 +95,8 @@ public class ScoreProcessor
 			Map.Entry map = (Map.Entry) iterator.next();
 
 		}
-		Map<String, Integer> map = sortValues(results);
-		return  map;
+		HashMap<String, Integer> map = sortValues(results);
+		return map;
 	}
 
 	private static HashMap sortValues(HashMap map)
@@ -60,7 +109,7 @@ public class ScoreProcessor
 			@Override
 			public int compare(Object o1, Object o2)
 			{
-				return ((Comparable) ((Map.Entry) (o1)).getValue()).compareTo(((Map.Entry) (o2)).getValue());
+				return ((Comparable) ((Map.Entry) (o2)).getValue()).compareTo(((Map.Entry) (o1)).getValue());
 			}
 		});
 
