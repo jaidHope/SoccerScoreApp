@@ -17,12 +17,12 @@ public class Game
 		teamTwo = new Team(teamName, score);
 	}
 
-	protected Team getTeamOne()
+	public Team getTeamOne()
 	{
 		return teamOne;
 	}
 
-	protected Team getTeamTwo()
+	public Team getTeamTwo()
 	{
 		return teamTwo;
 	}

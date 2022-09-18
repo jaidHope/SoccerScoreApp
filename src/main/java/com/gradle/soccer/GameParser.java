@@ -8,7 +8,18 @@ public class GameParser
 	HashMap<String, Integer> teamRankings = new HashMap<String, Integer>();
 	ArrayList<Game> games = new ArrayList<>();
 
-	void parseLine(String data)
+	public GameParser(){}
+
+	public GameParser(ArrayList<Game> games)
+	{
+		for (Game game:games)
+		{
+			this.games.add(game);
+		}
+
+	}
+
+	public void parseLine(String data)
 	{
 		String[] teamData  = data.split(",");
 
@@ -26,7 +37,7 @@ public class GameParser
 
 	}
 
-	HashMap<String, Integer> calculateTableScores()
+	public HashMap<String, Integer> calculateTableScores()
 	{
 	     for ( Game game : games)
 	     {
@@ -67,5 +78,10 @@ public class GameParser
 
 	     }
 		return teamRankings;
+	}
+
+	public ArrayList getGamesList()
+	{
+		return games;
 	}
 }

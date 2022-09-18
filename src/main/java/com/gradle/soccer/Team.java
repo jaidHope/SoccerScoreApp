@@ -11,11 +11,11 @@ public class Team implements Comparable
 		teamScore = score;
 	}
 
-	String getName()
+	public String getName()
 	{
 		return teamName;
 	}
-	int getScore()
+	public int getScore()
 	{
 		return teamScore;
 	}

@@ -108,7 +108,7 @@ public class ScoreProcessor
 		}
 	}
 
-	private static boolean checkOnePoint(int goals)
+	public static boolean checkOnePoint(int goals)
 	{
 		if(goals == 1)
 		{
@@ -117,7 +117,7 @@ public class ScoreProcessor
 		return false;
 	}
 
-	private static HashMap<String, Integer> sortResults(HashMap results)
+	public static HashMap<String, Integer> sortResults(HashMap results)
 	{
 		Set set = results.entrySet();
 
