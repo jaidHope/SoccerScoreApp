@@ -8,71 +8,103 @@ public class ScoreProcessor
 {
 	public static void main(String[] args)
 	{
-			System.out.println(" Specify file name: ");
-			Scanner scanner = new Scanner(System.in);
-			String filename = scanner.nextLine();
-			File file = new File(filename);
-			GameParser parser = new GameParser();
+		System.out.println(" Specify file name with absolute or relative filepath: ");
+		Scanner scanner = new Scanner(System.in);
+		String filename = scanner.nextLine();
 
-			try
-			{
-				Scanner filereader = new Scanner(file);
-				while (filereader.hasNextLine())
-				{
-					String data = filereader.nextLine();
-					parser.parseLine(data);
-				}
-				filereader.close();
-				scanner.close();
-				HashMap results = parser.calculateTableScores();
+		GameParser parser = new GameParser();
+		Scanner filereader = null;
 
-				HashMap<String, Integer> sortedResults = sortResults(results);
+		try
+		{
+			filereader = new Scanner(createFileObjectFromFilename(filename));
+		}
+		catch (FileNotFoundException e)
+		{
+			throw new RuntimeException(e);
+		}
 
-				printRankings(sortedResults);
-			}
+		while (filereader.hasNextLine())
+		{
+			String data = filereader.nextLine();
+			parser.parseLine(data);
+		}
 
-			catch (FileNotFoundException e)
-			{
-				throw new RuntimeException(e);
-			}
+		filereader.close();
+		scanner.close();
+
+		HashMap results = parser.calculateTableScores();
+		HashMap<String, Integer> sortedResults = sortResults(results);
+		printRankings(sortedResults);
+	}
+
+	public static File createFileObjectFromFilename(String filename)
+	{
+		String file = new File(filename).getAbsolutePath();
+		return new File(file);
 	}
 
 	private static void printRankings(HashMap sortedResults)
 	{
 		Set results = sortedResults.entrySet();
 
+		// counter to store each team's placing
 		int i = 1;
+		Map.Entry prevTeam = null;
+
 		Iterator iterator = results.iterator();
+
+		// jump ahead one and set `prev` to the first iterator value. This means that `current` becomes the second value,
+		// hence, a look-behind comparison is done.
+		if (iterator.hasNext())
+		{
+			prevTeam = (Map.Entry)iterator.next();
+		}
+
 		while (iterator.hasNext())
 		{
-			Map.Entry team = (Map.Entry) iterator.next();
+			Map.Entry currentTeam = (Map.Entry) iterator.next();
 
 			//check if there are consecutive identical scores
-			if (team.getValue() == ((Map.Entry<?, ?>) iterator.next()).getValue())
+			if (prevTeam.getValue() == currentTeam.getValue())
 			{
 				// if the team only has one point, then a slightly different string needs to be output.
-				if (checkOnePoint((int)team.getValue()))
+				if (checkOnePoint((int)prevTeam.getValue()))
 				{
-					System.out.println(i + ". " + team.getKey() + ", " + team.getValue() + " pt");
+					System.out.println(i + ". " + prevTeam.getKey() + ", " + prevTeam.getValue() + " pt");
 				}
 				else
 				{
-					System.out.println(i + ". " + team.getKey() + ", " + team.getValue() + " pts");
+					System.out.println(i + ". " + prevTeam.getKey() + ", " + prevTeam.getValue() + " pts");
 				}
 			}
 			else
 			{
-				if (checkOnePoint((int) team.getValue()))
+				if (checkOnePoint((int) prevTeam.getValue()))
 				{
-					System.out.println(i + ". " + team.getKey() + ", " + team.getValue() + " pt");
+					System.out.println(i + ". " + prevTeam.getKey() + ", " + prevTeam.getValue() + " pt");
 				} else
 				{
-					System.out.println(i + ". " + team.getKey() + ", " + team.getValue() + " pts");
+					System.out.println(i + ". " + prevTeam.getKey() + ", " + prevTeam.getValue() + " pts");
 				}
 				i++;
 			}
 
+			//The value of the previous team now becomes the current team's name
+			prevTeam = currentTeam;
+		}
 
+		/* To cater for the last team being processed, we need to add this block of code. Because of how the iterator works, once the above
+		 * has finished executing, the value of the `prev` will be the last element in the HashMap, which still needs to
+		 * be processed (`currentTeam` will be NULL)
+		 */
+		if (checkOnePoint((int)prevTeam.getValue()))
+		{
+			System.out.println(i + ". " + prevTeam.getKey() + ", " + prevTeam.getValue() + " pt");
+		}
+		else
+		{
+			System.out.println(i + ". " + prevTeam.getKey() + ", " + prevTeam.getValue() + " pts");
 		}
 	}
 
@@ -93,7 +125,6 @@ public class ScoreProcessor
 		while (iterator.hasNext())
 		{
 			Map.Entry map = (Map.Entry) iterator.next();
-
 		}
 		HashMap<String, Integer> map = sortValues(results);
 		return map;
@@ -113,7 +144,7 @@ public class ScoreProcessor
 			}
 		});
 
-		//copying the sorted list in HashMap to preserve the iteration order
+		//copying the sorted list into HashMap to preserve the iteration order
 		HashMap sortedHashMap = new LinkedHashMap();
 		for (Iterator it = list.iterator(); it.hasNext();)
 		{
@@ -122,12 +153,5 @@ public class ScoreProcessor
 		}
 
 		return sortedHashMap;
-	}
-	private static void parseFileInput(Scanner scanner)
-	{
-		while (scanner.hasNextLine()) {
-			String data = scanner.nextLine();
-			System.out.println(data);
-		}
 	}
 }

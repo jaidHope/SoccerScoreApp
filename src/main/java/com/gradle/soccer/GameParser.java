@@ -15,8 +15,8 @@ public class GameParser
 		String teamOneScore = teamData[0].replaceAll("[^0-9]","");
 		String teamTwoScore = teamData[1].replaceAll("[^0-9]","");
 
-		String teamOneName = teamData[0].replaceAll("[^a-zA-Z_ ]*", "");
-		String teamTwoName = teamData[1].replaceAll("[^a-zA-Z_ ]*", "");
+		String teamOneName = teamData[0].replaceAll("[^a-zA-Z_ ]*", "").strip();
+		String teamTwoName = teamData[1].replaceAll("[^a-zA-Z_ ]*", "").strip();
 
 		Game game = new Game();
 		game.setTeamOne(teamOneName, Integer.parseInt(teamOneScore));
@@ -46,7 +46,7 @@ public class GameParser
 			     teamRankings.put(teamTwoName, 0);
 		     }
 
-			 //calculate score based on game
+			 //calculate points based on game
 		     if(teamOneScore > teamTwoScore)
 		     {
 				 int currentScore = teamRankings.get(teamOneName);

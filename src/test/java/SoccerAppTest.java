@@ -1,38 +1,31 @@
 import com.gradle.soccer.ScoreProcessor;
-import org.junit.*;
+import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
-import static org.junit.Assert.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class SoccerAppTest
 {
-	/*
-	 * This test ensures that each line of input is correctly parsed and that each game's characteristics
-	 * is added to the arraylist
-	 */
-	/*@Test
-	public void testParseGameInFile()
-	{
-		ArrayList game_expected = new ArrayList();
-		game_expected.add("Lions");
-		game_expected.add(3);
-		game_expected.add("Snakes");
-		game_expected.add(3);
 
-		ScoreProcessor app = new ScoreProcessor();
-		Game game = app.parseInput();
-
-		assertArrayEquals(app.parseLine(), game_expected);
-	}
-*/
-	/*
-	 * This test ensures that each line of input entered on the command line is correctly parsed and that each game's characteristics
-	 * is added to the arraylist
+	/**
+	 * This test checks that a new file object is created based on the file path passed in.
 	 */
 	@Test
-	public void testParseGameOnCmdLine()
+	public void createFileObjectFromFilenameTest()
 	{
+		String sep = File.separator;
+		String file_expected = new File("src" + sep + "main" + sep + "resources" + sep + "input.txt").getAbsolutePath();
 
+		File file_actual = ScoreProcessor.createFileObjectFromFilename("src\\main\\resources\\input.txt");
+
+		assertEquals(file_expected.toString(), file_actual.toString());
 	}
+
+	
+
 }
