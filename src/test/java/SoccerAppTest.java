@@ -125,7 +125,7 @@ public class SoccerAppTest
 	}
 
 	/**
-	 * Test that the ScoreProcessor app is able to calculate overall points for each time when multiple individual matches are passed in.
+	 * Test that the ScoreProcessor app is able to calculate overall points for each time when multiple individual matches passed in.
 	 */
 	@Test
 	public void calcTableScores_success()

@@ -6,11 +6,14 @@ import java.util.*;
 
 public class ScoreProcessor
 {
+	/**
+	 * Entry point to the SoccerScoreApp. Run the application from the command line by running gradlew run --args="path/to/file" (platform independent)
+	 *
+	 * @param args Absolute path of the file containing the football matches.
+	 */
 	public static void main(String[] args)
 	{
-		System.out.println(" Specify file name with absolute or relative filepath: ");
-		Scanner scanner = new Scanner(System.in);
-		String filename = scanner.nextLine();
+		String filename = args[0];
 
 		GameParser parser = new GameParser();
 		Scanner filereader = null;
@@ -31,7 +34,6 @@ public class ScoreProcessor
 		}
 
 		filereader.close();
-		scanner.close();
 
 		HashMap results = parser.calculateTableScores();
 		HashMap<String, Integer> sortedResults = sortResults(results);
@@ -44,11 +46,19 @@ public class ScoreProcessor
 		return new File(file);
 	}
 
+	/**
+	 * This method is used to print the final rankings of each soccer team, by iterating through the HashMap of sorted
+	 * results and performing string processing in order to output the results in the correct format.
+	 *
+	 * As part of this processing, the team ranking is printed in list form (i.e. 1. 2. ... n.), and where two teams
+	 * have the same number of points, they are ordered alphabetically, with the same list item number.
+	 * @param sortedResults
+	 */
 	private static void printRankings(HashMap sortedResults)
 	{
 		Set results = sortedResults.entrySet();
 
-		// counter to store each team's placing
+		// counter to store each team's placing (list item number)
 		int i = 1;
 		Map.Entry prevTeam = null;
 
@@ -117,6 +127,13 @@ public class ScoreProcessor
 		return false;
 	}
 
+	/**
+	 * This method takes in a HashMap of unordered football teams and their results, and iterates through each entry, and calls sortValues()
+	 * on the entire HashMap, so it can compare the current iterator entry to the whole HashMap.
+	 *
+	 * @param results
+	 * @return A HashMap containing the sorted team-score pairs.
+	 */
 	public static HashMap<String, Integer> sortResults(HashMap results)
 	{
 		Set set = results.entrySet();
@@ -130,6 +147,16 @@ public class ScoreProcessor
 		return map;
 	}
 
+	/**
+	 * This method takes in an unsorted HashMap and sorts it by converting the HashMap to a LinkedList, and passing that
+	 * LinkedList through to a custom comparator which compares the teams score values.
+	 *
+	 * Once sorting has been completed, the LinkedList is converted back into a HashMap in order to preserve the new order,
+	 * and for ease of processing when outputting final points.
+	 *
+	 * @param map
+	 * @return HashMap containing the sorted team-score pairs.
+	 */
 	private static HashMap sortValues(HashMap map)
 	{
 		List list = new LinkedList(map.entrySet());
