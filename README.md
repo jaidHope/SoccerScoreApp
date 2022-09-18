@@ -23,3 +23,19 @@ Lions 4, Grouches 0
 ## Technical Notes
 - This app has been programmed in Java and is built using gradle. The gradle wrapper required is shipped with this project.
 - 7 automated JUnit tests have been written using JUnit 5. All are passing.
+
+## How to build
+1. Sync out this repository
+2. Navigate to the root folder of this project (i.e. SoccerScoreApp)
+3. Open a command line window and type .\gradlew clean build
+
+## How to run application
+1. Once repository synced out and built, run the following command:
+```.\gradlew run --args="absolute/path/to/filename"```
+
+![image](https://user-images.githubusercontent.com/31666184/190922166-5fcec858-209f-44f9-b0c5-acb003976b41.png)
+
+## How to run tests
+1. Once project synced out, use the command 
+
+
